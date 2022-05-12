@@ -52,6 +52,15 @@ function TodoList(props) {
     setListItem(activeList);
   };
 
+  const onFinishEditItem = (itemEdit, newValue) => {
+    const updateData = listItem.map((item) => ({
+      ...item,
+      title: item.id === itemEdit.id ? newValue : item.title,
+    }));
+
+    setListItem(updateData);
+  };
+
   return (
     <ul>
       <Header onAddItem={onAddItem} arrowShow="true"></Header>
@@ -63,6 +72,7 @@ function TodoList(props) {
             item={item}
             onDeleteItem={onDeleteItem}
             onCompletedItem={onCompletedItem}
+            onFinishEditItem={onFinishEditItem}
           />
         ))}
 
