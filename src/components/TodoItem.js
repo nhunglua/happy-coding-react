@@ -11,12 +11,28 @@ function TodoItem(props) {
   };
 
   const onDeleteItem = (id) => {
-    props.onDeleteItem(id);
+    const { onDeleteItem } = props;
+
+    if (typeof onDeleteItem === "function") {
+      onDeleteItem(id);
+    }
+  };
+
+  const completedItem = (id) => {
+    const { onCompletedItem } = props;
+
+    if (typeof onCompletedItem === "function") {
+      onCompletedItem(id);
+    }
   };
 
   return (
-    <li className="todo-item item">
-      <input type="checkbox" />
+    <li className={`todo-item ${item.isComplete ? "completed" : "item"}`}>
+      <input
+        type="checkbox"
+        checked={item.isComplete}
+        onChange={() => completedItem(item.id)}
+      />
       {item && renderItemContent()}
       <button className="btn-delete" onClick={() => onDeleteItem(item.id)}>
         X
