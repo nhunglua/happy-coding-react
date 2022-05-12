@@ -17,12 +17,19 @@ function TodoList(props) {
     });
   };
 
+  const onDeleteItem = (id) => {
+    setListItem((prevState) => {
+      return prevState.filter((item) => item.id !== id);
+    });
+  };
   return (
     <ul>
       <Header onAddItem={onAddItem} arrowShow="true"></Header>
 
       {listItem.length > 0 &&
-        listItem.map((item, index) => <TodoItem key={item.id} item={item} />)}
+        listItem.map((item, index) => (
+          <TodoItem key={item.id} item={item} onDeleteItem={onDeleteItem} />
+        ))}
 
       {listItem.length > 0 && <Footer />}
     </ul>

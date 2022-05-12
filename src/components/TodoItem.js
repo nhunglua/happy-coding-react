@@ -5,16 +5,22 @@ TodoItem.propTypes = {};
 
 function TodoItem(props) {
   const { item } = props;
-  console.log({ item });
+
   const renderItemContent = () => {
     return <p> {item.title} </p>;
   };
 
+  const onDeleteItem = (id) => {
+    props.onDeleteItem(id);
+  };
+
   return (
     <li className="todo-item item">
-      <input type="checkbox" checked />
+      <input type="checkbox" />
       {item && renderItemContent()}
-      <button className="btn-delete">X</button>
+      <button className="btn-delete" onClick={() => onDeleteItem(item.id)}>
+        X
+      </button>
     </li>
   );
 }
