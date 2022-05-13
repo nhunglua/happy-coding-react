@@ -38,7 +38,10 @@ function TodoItem(props) {
     const { onFinishEditItem } = props;
 
     if (event.keyCode === ENTER_KEY_CODE) {
-      onFinishEditItem(item, newContent);
+      onFinishEditItem({
+        ...item,
+        title: newContent,
+      });
 
       setEditingMode(false);
     }

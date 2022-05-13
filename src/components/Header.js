@@ -12,9 +12,17 @@ function Header(props) {
 
   const handleSubmit = (event) => {
     if (title.length && event.keyCode === ENTER_KEY_CODE) {
-      props.onAddItem({ title, id: uuidv4(), isComplete: false });
+      props.onAddItem({ title, isComplete: false });
 
       setTitle("");
+    }
+  };
+
+  const toggleCompleteAll = () => {
+    const { onToggleCompleteAll } = props;
+
+    if (typeof toggleCompleteAll === "function") {
+      onToggleCompleteAll();
     }
   };
 
@@ -24,7 +32,9 @@ function Header(props) {
 
   return (
     <li className="header">
-      <button className="active">{renderArrow()}</button>
+      <button onClick={toggleCompleteAll} className="active">
+        {renderArrow()}
+      </button>
 
       <input
         name="title"
