@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react";
-
-import PropTypes from "prop-types";
-
+import { useSelector, useDispatch } from "react-redux";
+import * as todoActions from "../actions/todo";
 import Header from "./Header";
 import Footer from "./Footer";
 import TodoItem from "./TodoItem";
 
-TodoList.propTypes = {};
-
 function TodoList(props) {
-  const [listItem, setListItem] = useState([]);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const { fetchTodo } = todoActions;
+    dispatch(fetchTodo());
+  }, []);
+  const todoList = useSelector((state) => state.todo);
+
+  //===============================
+  const [listItem, setListItem] = useState(todoList.listItem);
+  console.log({ listItem, todoList });
   const [currentFilter, setCurrentFilter] = useState("all");
   const [checkCompleteAll, setCheckCompleteAll] = useState(false);
 
@@ -81,8 +88,8 @@ function TodoList(props) {
         arrowShow="true"
       ></Header>
 
-      {data.length > 0 &&
-        data.map((item, index) => (
+      {todoList.listItem.length > 0 &&
+        todoList.listItem.map((item, index) => (
           <TodoItem
             key={item.id}
             item={item}
