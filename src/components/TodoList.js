@@ -11,6 +11,7 @@ TodoList.propTypes = {};
 function TodoList(props) {
   const [listItem, setListItem] = useState([]);
   const [currentFilter, setCurrentFilter] = useState("all");
+  const [checkCompleteAll, setCheckCompleteAll] = useState(false);
 
   const onAddItem = (newItem) => {
     setListItem([...listItem, newItem]);
@@ -42,7 +43,7 @@ function TodoList(props) {
   } else if (currentFilter === "active") {
     data = activeList;
   } else {
-    data = completeList;
+    data = listItem.filter((item) => item.isComplete);
   }
 
   const countItem = activeList.length;
@@ -61,9 +62,24 @@ function TodoList(props) {
     setListItem(updateData);
   };
 
+  const onToggleCompleteAll = () => {
+    const updateListItem = listItem.map((item) => ({
+      ...item,
+      isComplete: checkCompleteAll,
+    }));
+
+    //What's happen?
+    setCheckCompleteAll(!checkCompleteAll);
+    setListItem(updateListItem);
+  };
+
   return (
     <ul>
-      <Header onAddItem={onAddItem} arrowShow="true"></Header>
+      <Header
+        onToggleCompleteAll={onToggleCompleteAll}
+        onAddItem={onAddItem}
+        arrowShow="true"
+      ></Header>
 
       {data.length > 0 &&
         data.map((item, index) => (

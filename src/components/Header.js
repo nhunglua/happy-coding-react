@@ -18,13 +18,23 @@ function Header(props) {
     }
   };
 
+  const toggleCompleteAll = () => {
+    const { onToggleCompleteAll } = props;
+
+    if (typeof toggleCompleteAll === "function") {
+      onToggleCompleteAll();
+    }
+  };
+
   const renderArrow = () => {
     return <img src={arrow} alt="arrow" />;
   };
 
   return (
     <li className="header">
-      <button className="active">{renderArrow()}</button>
+      <button onClick={toggleCompleteAll} className="active">
+        {renderArrow()}
+      </button>
 
       <input
         name="title"
