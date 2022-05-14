@@ -7,8 +7,8 @@ const todoApi = {
   },
 
   add(newItem) {
-    const url = `/todos/${newItem.id}`;
-    return axiosClient.post(url, { newItem });
+    const url = `/todos`;
+    return axiosClient.post(url, newItem);
   },
 
   update(newItem) {

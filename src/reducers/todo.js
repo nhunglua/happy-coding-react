@@ -27,6 +27,21 @@ const todoReducer = (state = initialState, action) => {
         error: action.payload.error,
       };
 
+    case actionType.ADD_TODO:
+      return {
+        ...state,
+      };
+    case actionType.ADD_TODO_SUCCESS:
+      console.log("ADD_TODO_SUCCESS", action);
+      return {
+        ...state,
+        listItem: [...state.listItem, ...[action.payload.data]],
+      };
+    case actionType.ADD_TODO_FAILED:
+      return {
+        ...state,
+        error: action.payload.error,
+      };
     default:
       return state;
   }

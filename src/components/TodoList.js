@@ -21,7 +21,9 @@ function TodoList(props) {
   const [checkCompleteAll, setCheckCompleteAll] = useState(false);
 
   const onAddItem = (newItem) => {
-    setListItem([...listItem, newItem]);
+    // setListItem([...listItem, newItem]);
+    const { addTodo } = todoActions;
+    dispatch(addTodo(newItem));
   };
 
   const onDeleteItem = (id) => {

@@ -12,7 +12,7 @@ function Header(props) {
 
   const handleSubmit = (event) => {
     if (title.length && event.keyCode === ENTER_KEY_CODE) {
-      props.onAddItem({ title, id: uuidv4(), isComplete: false });
+      props.onAddItem({ title, isComplete: false });
 
       setTitle("");
     }

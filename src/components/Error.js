@@ -5,10 +5,6 @@ import { useSelector } from "react-redux";
 
 function Error(props) {
   let error = useSelector((state) => state.error);
-  error = {
-    show: true,
-    errorText: "Error",
-  };
   return (
     <Modal show={error.show} centered>
       <Modal.Header closeButton>
