@@ -12,6 +12,8 @@ import {
   fetchTodoSuccess,
   deleteTodoSuccess,
   deleteTodoFailed,
+  updateTodoSuccess,
+  updateTodoFailed,
 } from "../actions/todo";
 
 export const STATUS_CODE = {
@@ -73,8 +75,27 @@ export function* deleteTodoSaga({ payload }) {
   yield put(hideLoading());
 }
 
+export function* updateTodoSaga({ payload }) {
+  yield put(showLoading());
+
+  const { todo } = payload;
+  const response = yield call(todoApi.update, todo);
+
+  const { data, status } = response;
+
+  if (status === STATUS_CODE.SUCCESS) {
+    yield put(updateTodoSuccess(data));
+  } else {
+    yield put(deleteTodoFailed(data));
+  }
+
+  yield delay(500);
+  yield put(hideLoading());
+}
+
 export default function* rootSaga() {
   yield fork(watchFetchTodoAction);
   yield takeEvery(todoTypes.ADD_TODO, addTodoSaga);
   yield takeEvery(todoTypes.DELETE_TODO, deleteTodoSaga);
+  yield takeEvery(todoTypes.UPDATE_TODO, updateTodoSaga);
 }

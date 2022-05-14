@@ -59,3 +59,24 @@ export const deleteTodoFailed = (error) => ({
     error,
   },
 });
+
+export const updateTodo = (todo) => ({
+  type: todoConstants.UPDATE_TODO,
+  payload: {
+    todo,
+  },
+});
+
+export const updateTodoSuccess = (todo) => ({
+  type: todoConstants.UPDATE_TODO_SUCCESS,
+  payload: {
+    todo,
+  },
+});
+
+export const updateTodoFailed = (error) => ({
+  type: todoConstants.UPDATE_TODO_FAILED,
+  payload: {
+    error,
+  },
+});

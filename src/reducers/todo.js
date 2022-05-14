@@ -58,6 +58,36 @@ const todoReducer = (state = initialState, action) => {
         ...state,
         error: action.payload.error,
       };
+
+    case actionType.UPDATE_TODO:
+      return {
+        ...state,
+      };
+
+    case actionType.UPDATE_TODO_SUCCESS:
+      const todoLists = [...state.listItem];
+
+      const { todo } = action.payload;
+      const todoIndex = todoLists.findIndex((item) => item.id === todo.id);
+      if (todoIndex !== -1) {
+        todoLists[todoIndex] = todo;
+      }
+
+      console.log("UPDATE_TODO_SUCCESS", {
+        todoLists,
+        payload: action.payload,
+        data: action.payload.todo,
+      });
+
+      return {
+        ...state,
+        listItem: todoLists,
+      };
+    case actionType.UPDATE_TODO_FAILED:
+      return {
+        ...state,
+        error: action.payload.error,
+      };
     default:
       return state;
   }

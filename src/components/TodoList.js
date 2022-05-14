@@ -64,13 +64,16 @@ function TodoList(props) {
     setListItem(activeList);
   };
 
-  const onFinishEditItem = (itemEdit, newValue) => {
-    const updateData = listItem.map((item) => ({
-      ...item,
-      title: item.id === itemEdit.id ? newValue : item.title,
-    }));
+  const onFinishEditItem = (todo) => {
+    // const updateData = listItem.map((item) => ({
+    //   ...item,
+    //   title: item.id === itemEdit.id ? newValue : item.title,
+    // }));
 
-    setListItem(updateData);
+    // setListItem(updateData);
+
+    const { updateTodo } = todoActions;
+    dispatch(updateTodo(todo));
   };
 
   const onToggleCompleteAll = () => {

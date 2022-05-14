@@ -11,9 +11,9 @@ const todoApi = {
     return axiosClient.post(url, newItem);
   },
 
-  update(newItem) {
-    const url = "/todos";
-    return axiosClient.patch(url, { newItem });
+  update(todo) {
+    const url = `/todos/${todo.id}`;
+    return axiosClient.patch(url, todo);
   },
 
   remove(id) {
