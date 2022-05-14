@@ -1,25 +1,40 @@
 import React, { useEffect, useState } from "react";
-
-import PropTypes from "prop-types";
-
+import { useSelector, useDispatch } from "react-redux";
+import * as todoActions from "../actions/todo";
 import Header from "./Header";
 import Footer from "./Footer";
 import TodoItem from "./TodoItem";
 
-TodoList.propTypes = {};
-
 function TodoList(props) {
-  const [listItem, setListItem] = useState([]);
-  const [currentFilter, setCurrentFilter] = useState("all");
-  const [checkCompleteAll, setCheckCompleteAll] = useState(false);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const { fetchTodo } = todoActions;
+    dispatch(fetchTodo());
+  }, []);
+  const todoList = useSelector((state) => state.todo);
 
   const onAddItem = (newItem) => {
-    setListItem([...listItem, newItem]);
+    // setListItem([...listItem, newItem]);
+    const { addTodo } = todoActions;
+    dispatch(addTodo(newItem));
   };
 
   const onDeleteItem = (id) => {
-    setListItem(listItem.filter((item) => item.id !== id));
+    // setListItem(listItem.filter((item) => item.id !== id));
+    const { deleteTodo } = todoActions;
+    dispatch(deleteTodo(id));
   };
+
+  const onFinishEditItem = (todo) => {
+    const { updateTodo } = todoActions;
+    dispatch(updateTodo(todo));
+  };
+
+  //============== Đoạn này chưa chưa chuyển về dùng redux hay call API (check giups em add/update/remove/getAll) nhá =================
+  const [listItem, setListItem] = useState(todoList.listItem);
+  const [currentFilter, setCurrentFilter] = useState("all");
+  const [checkCompleteAll, setCheckCompleteAll] = useState(false);
 
   const onCompletedItem = (id) => {
     const updateData = listItem.map((item) => ({
@@ -35,15 +50,15 @@ function TodoList(props) {
   };
 
   let data = [];
-  const activeList = listItem.filter((item) => !item.isComplete);
-  const completeList = listItem.filter((item) => item.isComplete);
+  const activeList = todoList || [].filter((item) => !item.isComplete);
+  const completeList = todoList || [].filter((item) => item.isComplete);
 
   if (currentFilter === "all") {
     data = listItem;
   } else if (currentFilter === "active") {
     data = activeList;
   } else {
-    data = listItem.filter((item) => item.isComplete);
+    data = todoList.filter((item) => item.isComplete);
   }
 
   const countItem = activeList.length;
@@ -51,15 +66,6 @@ function TodoList(props) {
 
   const onClearCompletedClick = () => {
     setListItem(activeList);
-  };
-
-  const onFinishEditItem = (itemEdit, newValue) => {
-    const updateData = listItem.map((item) => ({
-      ...item,
-      title: item.id === itemEdit.id ? newValue : item.title,
-    }));
-
-    setListItem(updateData);
   };
 
   const onToggleCompleteAll = () => {
@@ -81,8 +87,8 @@ function TodoList(props) {
         arrowShow="true"
       ></Header>
 
-      {data.length > 0 &&
-        data.map((item, index) => (
+      {todoList.listItem.length > 0 &&
+        todoList.listItem.map((item, index) => (
           <TodoItem
             key={item.id}
             item={item}
@@ -92,7 +98,7 @@ function TodoList(props) {
           />
         ))}
 
-      {listItem.length > 0 && (
+      {todoList.length > 0 && (
         <Footer
           total={countItem}
           onChangeFilter={onChangeFilter}
