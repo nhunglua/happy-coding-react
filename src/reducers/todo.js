@@ -32,12 +32,28 @@ const todoReducer = (state = initialState, action) => {
         ...state,
       };
     case actionType.ADD_TODO_SUCCESS:
-      console.log("ADD_TODO_SUCCESS", action);
       return {
         ...state,
         listItem: [...state.listItem, ...[action.payload.data]],
       };
     case actionType.ADD_TODO_FAILED:
+      return {
+        ...state,
+        error: action.payload.error,
+      };
+
+    case actionType.DELETE_TODO:
+      return {
+        ...state,
+      };
+    case actionType.DELETE_TODO_SUCCESS:
+      return {
+        ...state,
+        listItem: state.listItem.filter(
+          (item) => item.id !== action.payload.id
+        ),
+      };
+    case actionType.DELETE_TODO_FAILED:
       return {
         ...state,
         error: action.payload.error,

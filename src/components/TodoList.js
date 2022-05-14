@@ -27,7 +27,9 @@ function TodoList(props) {
   };
 
   const onDeleteItem = (id) => {
-    setListItem(listItem.filter((item) => item.id !== id));
+    // setListItem(listItem.filter((item) => item.id !== id));
+    const { deleteTodo } = todoActions;
+    dispatch(deleteTodo(id));
   };
 
   const onCompletedItem = (id) => {

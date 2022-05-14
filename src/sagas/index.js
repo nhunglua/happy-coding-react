@@ -7,9 +7,11 @@ import { showLoading, hideLoading } from "../actions/loading";
 import { showError, hideError } from "../actions/error";
 import {
   addTodoSuccess,
-  addTodoTodoFailed,
+  addTodoFailed,
   fetchTodoFailed,
   fetchTodoSuccess,
+  deleteTodoSuccess,
+  deleteTodoFailed,
 } from "../actions/todo";
 
 export const STATUS_CODE = {
@@ -35,7 +37,7 @@ export function* watchFetchTodoAction(action) {
 }
 
 export function* addTodoSaga({ payload }) {
-  yield showLoading();
+  yield put(showLoading());
   const { newItem } = payload;
   const { title, isComplete } = newItem;
 
@@ -45,8 +47,28 @@ export function* addTodoSaga({ payload }) {
   if (status === STATUS_CODE.CREATED) {
     yield put(addTodoSuccess(data));
   } else {
-    yield put(addTodoTodoFailed(data));
+    yield put(addTodoFailed(data));
   }
+  yield delay(500);
+  yield put(hideLoading());
+}
+
+export function* deleteTodoSaga({ payload }) {
+  yield put(showLoading());
+
+  const { id } = payload;
+  const response = yield call(todoApi.remove, id);
+
+  const { data, status } = response;
+
+  console.log({ payload, data, status });
+
+  if (status === STATUS_CODE.SUCCESS) {
+    yield put(deleteTodoSuccess(id));
+  } else {
+    yield put(deleteTodoFailed(data));
+  }
+
   yield delay(500);
   yield put(hideLoading());
 }
@@ -54,4 +76,5 @@ export function* addTodoSaga({ payload }) {
 export default function* rootSaga() {
   yield fork(watchFetchTodoAction);
   yield takeEvery(todoTypes.ADD_TODO, addTodoSaga);
+  yield takeEvery(todoTypes.DELETE_TODO, deleteTodoSaga);
 }

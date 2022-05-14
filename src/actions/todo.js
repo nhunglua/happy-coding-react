@@ -32,8 +32,29 @@ export const addTodoSuccess = (data) => ({
   },
 });
 
-export const addTodoTodoFailed = (error) => ({
+export const addTodoFailed = (error) => ({
   type: todoConstants.ADD_TODO_FAILED,
+  payload: {
+    error,
+  },
+});
+
+export const deleteTodo = (id) => ({
+  type: todoConstants.DELETE_TODO,
+  payload: {
+    id,
+  },
+});
+
+export const deleteTodoSuccess = (id) => ({
+  type: todoConstants.DELETE_TODO_SUCCESS,
+  payload: {
+    id,
+  },
+});
+
+export const deleteTodoFailed = (error) => ({
+  type: todoConstants.DELETE_TODO_FAILED,
   payload: {
     error,
   },
