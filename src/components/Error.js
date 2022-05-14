@@ -5,18 +5,9 @@ import { useSelector } from "react-redux";
 
 function Error(props) {
   let error = useSelector((state) => state.error);
-  return (
-    <Modal show={error.show} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>Error</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <div className="form-group">
-          <span className="text-danger">{error.errorText}</span>
-        </div>
-      </Modal.Body>
-    </Modal>
-  );
+  const { show, errorText } = error;
+
+  return show && <span className="text-danger">{errorText} </span>;
 }
 
 export default Error;

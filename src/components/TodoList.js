@@ -14,12 +14,6 @@ function TodoList(props) {
   }, []);
   const todoList = useSelector((state) => state.todo);
 
-  //===============================
-  const [listItem, setListItem] = useState(todoList.listItem);
-  console.log({ listItem, todoList });
-  const [currentFilter, setCurrentFilter] = useState("all");
-  const [checkCompleteAll, setCheckCompleteAll] = useState(false);
-
   const onAddItem = (newItem) => {
     // setListItem([...listItem, newItem]);
     const { addTodo } = todoActions;
@@ -31,6 +25,16 @@ function TodoList(props) {
     const { deleteTodo } = todoActions;
     dispatch(deleteTodo(id));
   };
+
+  const onFinishEditItem = (todo) => {
+    const { updateTodo } = todoActions;
+    dispatch(updateTodo(todo));
+  };
+
+  //============== Đoạn này chưa chưa chuyển về dùng redux hay call API (check giups em add/update/remove/getAll) nhá =================
+  const [listItem, setListItem] = useState(todoList.listItem);
+  const [currentFilter, setCurrentFilter] = useState("all");
+  const [checkCompleteAll, setCheckCompleteAll] = useState(false);
 
   const onCompletedItem = (id) => {
     const updateData = listItem.map((item) => ({
@@ -46,15 +50,15 @@ function TodoList(props) {
   };
 
   let data = [];
-  const activeList = listItem.filter((item) => !item.isComplete);
-  const completeList = listItem.filter((item) => item.isComplete);
+  const activeList = todoList || [].filter((item) => !item.isComplete);
+  const completeList = todoList || [].filter((item) => item.isComplete);
 
   if (currentFilter === "all") {
     data = listItem;
   } else if (currentFilter === "active") {
     data = activeList;
   } else {
-    data = listItem.filter((item) => item.isComplete);
+    data = todoList.filter((item) => item.isComplete);
   }
 
   const countItem = activeList.length;
@@ -62,18 +66,6 @@ function TodoList(props) {
 
   const onClearCompletedClick = () => {
     setListItem(activeList);
-  };
-
-  const onFinishEditItem = (todo) => {
-    // const updateData = listItem.map((item) => ({
-    //   ...item,
-    //   title: item.id === itemEdit.id ? newValue : item.title,
-    // }));
-
-    // setListItem(updateData);
-
-    const { updateTodo } = todoActions;
-    dispatch(updateTodo(todo));
   };
 
   const onToggleCompleteAll = () => {
@@ -106,7 +98,7 @@ function TodoList(props) {
           />
         ))}
 
-      {listItem.length > 0 && (
+      {todoList.length > 0 && (
         <Footer
           total={countItem}
           onChangeFilter={onChangeFilter}
